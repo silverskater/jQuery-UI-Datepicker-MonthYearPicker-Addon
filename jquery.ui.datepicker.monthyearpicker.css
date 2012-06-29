@@ -1,0 +1,16 @@
+/* jquery ui datepicker month year picker */
+.ui-datepicker .ui-datepicker-select-month td ,
+.ui-datepicker .ui-datepicker-select-year td {
+	line-height: 3.4em;
+}
+.ui-datepicker .ui-datepicker-select-month td span,
+.ui-datepicker .ui-datepicker-select-month td a,
+.ui-datepicker .ui-datepicker-select-year td span,
+.ui-datepicker .ui-datepicker-select-year td a  {
+	font-size: 1.5em;
+	text-align: center;
+}
+.ui-datepicker .ui-datepicker-select-year td.outoffocus {
+	opacity: 0.5;
+}
+
