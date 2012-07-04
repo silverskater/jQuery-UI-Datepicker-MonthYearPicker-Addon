@@ -52,19 +52,13 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 			}
 		},
 		
-		_generateExtraHTML_MonthYearPicker: function(inst) {
+		_generateMonthPickerHTML_MonthYearPicker: function(inst, minDate, maxDate, drawMonth, inMinYear, inMaxYear) {
 			var dpuuid = inst.dpuuid;
-			var minDate = this._getMinMaxDate(inst, 'min');
-			var maxDate = this._getMinMaxDate(inst, 'max');
-			var drawYear = inst.drawYear;
-			var drawMonth = inst.drawMonth;
-			var inMinYear = (minDate && minDate.getFullYear() == drawYear);
-			var inMaxYear = (maxDate && maxDate.getFullYear() == drawYear);
 			var monthNamesShort = this._get(inst, 'monthNamesShort');
-			var unselectable = false;
 
 			var monthPicker = '<table><tbody><tr>';
 			
+			var unselectable = false;
 			for (var month = 0; month < 12; ) {
 				unselectable = 	(inMinYear && month < minDate.getMonth()) ||
 												(inMaxYear && month > maxDate.getMonth());
@@ -88,10 +82,23 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 			}
 			monthPicker += '</tbody></table>';
 			
+			return monthPicker;
+		},
+
+		_generateExtraHTML_MonthYearPicker: function(inst) {
+			var minDate = this._getMinMaxDate(inst, 'min');
+			var maxDate = this._getMinMaxDate(inst, 'max');
+			var drawYear = inst.drawYear;
+			var drawMonth = inst.drawMonth;
+			var inMinYear = (minDate && minDate.getFullYear() == drawYear);
+			var inMaxYear = (maxDate && maxDate.getFullYear() == drawYear);
+
+			var monthPicker = this._generateMonthPickerHTML_MonthYearPicker(inst, minDate, maxDate, drawMonth, inMinYear, inMaxYear);
+			
 			return '<div class="ui-datepicker-select-month" style="display: none">' + monthPicker + '</div>' +
 				'<div class="ui-datepicker-select-year" style="display: none"></div>';	//yearPicker gets filled dinamically
 		},
-		
+
 		_pickMonthYear_MonthYearPicker: function(id, valueMY, period) {
 			var dummySelect = $('<select/>').append( new Option(valueMY, valueMY, true, true) );
 			//select month and show datepicker or select year ...
@@ -102,13 +109,16 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 			}
 		},
 
-		_toggleDisplay_MonthYearPicker: function(id, screen) {
-			//var inst = this._curInst;
-			var target = $(id);
-			var inst = this._getInst(target[0]);
-			if (this._isDisabledDatepicker(target[0])) {
-				return;
+		_toggleDisplay_MonthYearPicker: function(inst, screen) {
+			if(typeof inst == 'string')  {
+				//var inst = this._curInst;
+				var target = $(inst);
+				inst = this._getInst(target[0]);
+				if (this._isDisabledDatepicker(target[0])) {
+					return;
+				}
 			}
+			
 			var dpuuid = inst.dpuuid;
 			var minDate = this._getMinMaxDate(inst, 'min');
 			var maxDate = this._getMinMaxDate(inst, 'max');
@@ -124,15 +134,20 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 			switch (screen) {
 				case 2:
 					//month picker
-					//var inMinYear = (minDate && minDate.getFullYear() == drawYear);
-					//var inMaxYear = (maxDate && maxDate.getFullYear() == drawYear);
+					var self = this;
 					var inMinYear = (minYear !== undefined && minYear == drawYear);
 					var inMaxYear = (maxYear !== undefined && maxYear == drawYear);
 					var _advanceYear_MYP = function(diff) {
 						inst.drawYear = drawYear += diff;
 						dpTitle.children(':first').text(drawYear);
-						inMinYear = (minYear !== undefined && minYear == drawYear);
-						inMaxYear = (maxYear !== undefined && maxYear == drawYear);
+						//update screen
+						if(minDate || maxDate) {
+							inMinYear = minYear == drawYear;
+							inMaxYear = maxYear == drawYear;
+							//update month selection
+							var monthPicker = self._generateMonthPickerHTML_MonthYearPicker(inst, minDate, maxDate, drawMonth, inMinYear, inMaxYear);
+							inst.dpDiv.children('.ui-datepicker-select-month').html(monthPicker);
+						}
 						_updatePrevNextYear_MYP();
 					}
 					var _updatePrevNextYear_MYP = function() {
