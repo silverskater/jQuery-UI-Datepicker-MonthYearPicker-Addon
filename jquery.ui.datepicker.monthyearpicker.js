@@ -128,28 +128,37 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 					//var inMaxYear = (maxDate && maxDate.getFullYear() == drawYear);
 					var inMinYear = (minYear !== undefined && minYear == drawYear);
 					var inMaxYear = (maxYear !== undefined && maxYear == drawYear);
-					//change prev next behaviour
 					var _advanceYear_MYP = function(diff) {
 						inst.drawYear = drawYear += diff;
 						dpTitle.children(':first').text(drawYear);
+						inMinYear = (minYear !== undefined && minYear == drawYear);
+						inMaxYear = (maxYear !== undefined && maxYear == drawYear);
+						_updatePrevNextYear_MYP();
 					}
-					dpPrev.removeAttr('onclick');
-					if(!inMinYear) {
-						dpPrev.removeClass('ui-state-disabled').click(function() {_advanceYear_MYP(-1)});
-					}
-					else {
-						dpPrev.addClass('ui-state-disabled');
-					}
-					dpNext.removeAttr('onclick');
-					if(!inMaxYear) {
-						dpNext.removeClass('ui-state-disabled').click(function() {_advanceYear_MYP(1)});
-					}
-					else {
-						dpNext.addClass('ui-state-disabled');
+					var _updatePrevNextYear_MYP = function() {
+						dpPrev.unbind('click');
+						if(!inMinYear) {
+							dpPrev.removeClass('ui-state-disabled').click(function() {_advanceYear_MYP(-1)});
+						}
+						else {
+							dpPrev.addClass('ui-state-disabled');
+						}
+						dpNext.unbind('click');
+						if(!inMaxYear) {
+							dpNext.removeClass('ui-state-disabled').click(function() {_advanceYear_MYP(1)});
+						}
+						else {
+							dpNext.addClass('ui-state-disabled');
+						}
 					}
 					//change title link behaviour
 					dpTitle.html('<a href="#" onclick="DP_jQuery_' + dpuuid + 
 						'.datepicker._toggleDisplay_MonthYearPicker(\'#' + inst.id + '\', 3);return false;">' + drawYear +'</a>');
+					//change prev next behaviour
+					dpPrev.removeAttr('onclick');  //remove DatePicker's onclick event
+					dpNext.removeAttr('onclick');  //remove DatePicker's onclick event
+					_updatePrevNextYear_MYP();
+					
 					$('table.ui-datepicker-calendar').hide();
 					$('.ui-datepicker-select-month').show();
 					$('.ui-datepicker-select-year').hide();
@@ -160,7 +169,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 					//change title link behaviour
 					dpTitle.unbind('click');
 					//change prev next behaviour
-										
+					
 					var _generateYearPicker_MYP = function(year) {
 						//title text
 						dpTitle.text(year + '-' + (year + 9)); //2010 - 2019
