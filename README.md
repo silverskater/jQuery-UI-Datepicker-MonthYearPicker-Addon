@@ -10,6 +10,11 @@ Use
     Include the css (jquery.ui.datepicker.monthyearpicker.css) or define your own style.
     That's it!
     
+    Example
+    Add these two lines to your html after <script type="text/javascript" src="js/jquery-ui-1.8.23.custom.min.js"></script>:
+		<script type="text/javascript" src="jQuery-UI-Datepicker-MonthYearPicker-Addon/jquery.ui.datepicker.monthyearpicker.js"></script>
+		<link type="text/css" href="jQuery-UI-Datepicker-MonthYearPicker-Addon/jquery.ui.datepicker.monthyearpicker.css" rel="stylesheet" />
+    That's it, your datepickers will show a nice month and year picker when clicking on the month year heading (e.g. September 2012).
 
 Contributing Code - Please Read!
 
