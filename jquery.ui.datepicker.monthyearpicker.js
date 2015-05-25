@@ -65,6 +65,8 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 			uidptitle_link.click(function(){$.datepicker._toggleDisplay_MonthYearPicker('#' + inst.id, 2); return false;});
 
 			inst.dpDiv.children('table.ui-datepicker-calendar').after(this._generateExtraHTML_MonthYearPicker(inst));
+		
+			this._reposition_MonthYearPicker(inst);
 		},
 		
 		//focus the date input field
