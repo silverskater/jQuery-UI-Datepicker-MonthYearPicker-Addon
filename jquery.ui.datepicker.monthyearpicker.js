@@ -133,6 +133,14 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 				this._toggleDisplay_MonthYearPicker(id, 2);
 			}
 		},
+		
+		_reposition_MonthYearPicker: function (inst) {
+	            inst.dpDiv.position({
+	                my: "left top",
+	                at: "left bottom",
+	                of: $(inst.input)
+	            });
+	        },
 
 		_toggleDisplay_MonthYearPicker: function(inst, screen, input) {
 			if(typeof inst == 'string')  {
@@ -209,6 +217,8 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 					$('table.ui-datepicker-calendar').hide();
 					$('.ui-datepicker-select-month').show();
 					$('.ui-datepicker-select-year').hide();
+					this._reposition_MonthYearPicker(inst);
+					
 					break;
 				case 3:
 					//year picker
@@ -272,6 +282,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 					$('table.ui-datepicker-calendar').hide();
 					$('.ui-datepicker-select-month').hide();
 					$('.ui-datepicker-select-year').show();
+					this._reposition_MonthYearPicker(inst);
 					
 					break;
 			}
