@@ -133,6 +133,17 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 				this._toggleDisplay_MonthYearPicker(id, 2);
 			}
 		},
+		
+		_addHoverEvents_MonthYearPicker: function (parent) {
+			var dpMonths = parent.find('.ui-state-default');
+			dpMonths.hover(
+				function () {
+					$(this).addClass('ui-state-hover');
+				},
+				function () {
+					$(this).removeClass("ui-state-hover");
+				});
+		},
 
 		_toggleDisplay_MonthYearPicker: function(inst, screen, input) {
 			if(typeof inst == 'string')  {
@@ -182,7 +193,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 							inst.dpDiv.children('.ui-datepicker-select-month').html(monthPicker);
 						}
 						_updatePrevNextYear_MYP();
-					}
+					};
 					var _updatePrevNextYear_MYP = function() {
 						dpPrev.unbind('click');
 						if(!inMinYear) {
@@ -198,13 +209,16 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 						else {
 							dpNext.addClass('ui-state-disabled');
 						}
-					}
+					};
 					//change title link behaviour
 					dpTitle.html('<a href="#" onclick="$.datepicker._toggleDisplay_MonthYearPicker(\'#' + inst.id + '\', 3);return false;">' + drawYear +'</a>');
 					//change prev next behaviour
 					dpPrev.removeAttr('onclick');  //remove DatePicker's onclick event
 					dpNext.removeAttr('onclick');  //remove DatePicker's onclick event
 					_updatePrevNextYear_MYP();
+					
+					var dpMonthSelector = inst.dpDiv.find('.ui-datepicker-select-month table');
+					this._addHoverEvents_MonthYearPicker(dpMonthSelector);
 					
 					$('table.ui-datepicker-calendar').hide();
 					$('.ui-datepicker-select-month').show();
@@ -265,9 +279,11 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 						}
 						yearPicker += '</tbody></table>';
 						$('.ui-datepicker-select-year').html(yearPicker);
-					}
-
+					};
 					_updateYearPicker_MYP(year);
+					
+					var dpYearSelector = inst.dpDiv.find('.ui-datepicker-select-year table');
+					this._addHoverEvents_MonthYearPicker(dpYearSelector);
 					
 					$('table.ui-datepicker-calendar').hide();
 					$('.ui-datepicker-select-month').hide();
