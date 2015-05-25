@@ -200,7 +200,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 						}
 					}
 					//change title link behaviour
-					dpTitle.html('<a href="#" onclick="$.datepicker._toggleDisplay_MonthYearPicker(\'#' + inst.id + '\', 3);return false;">' + drawYear +'</a>');
+					dpTitle.html('<a href="#" class="ui-datepicker-yearpicker" onclick="$.datepicker._toggleDisplay_MonthYearPicker(\'#' + inst.id + '\', 3);return false;">' + drawYear +'</a>');
 					//change prev next behaviour
 					dpPrev.removeAttr('onclick');  //remove DatePicker's onclick event
 					dpNext.removeAttr('onclick');  //remove DatePicker's onclick event
@@ -219,8 +219,8 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 					
 					var _updateYearPicker_MYP = function(year) {
 						//TODO RTL
-						//title text
-						dpTitle.text(year + '-' + (year + 9)); //2010 - 2019
+						//change title html
+                        			dpTitle.html('<span class="ui-datepicker-yearrange">' + year + '-' + (year + 9) + '</span>'); //2010 - 2019
 						//change prev next behaviour
 						dpPrev.unbind('click');
 						dpNext.unbind('click');
