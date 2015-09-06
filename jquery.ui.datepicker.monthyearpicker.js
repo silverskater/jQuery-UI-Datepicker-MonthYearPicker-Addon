@@ -14,7 +14,6 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 	$.datepicker._doKeyDown_MonthYearPicker = $.datepicker._doKeyDown;
 
 	$.extend($.datepicker, {
-		
 		_doKeyDown: function(event) {
 			var inst = $.datepicker._getInst(event.target);
 			var handled = true;
@@ -129,6 +128,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 			//select month and show datepicker or select year ...
 			this._selectMonthYear(id, dummySelect[0], period);
 				//... and show month picker
+				//alert(dummySelect[0]);
 			if(period == 'Y') {
 				this._toggleDisplay_MonthYearPicker(id, 2);
 			}
@@ -183,6 +183,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 					var inMaxYear = (maxYear !== undefined && maxYear == drawYear);
 					var _advanceYear_MYP = function(diff) {
 						inst.drawYear = drawYear += diff;
+						alert(diff);
 						dpTitle.children(':first').text(drawYear);
 						//update screen
 						if(minDate || maxDate) {
@@ -213,6 +214,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 					//change title link behaviour
 					dpTitle.html('<a href="#" class="ui-datepicker-yearpicker" onclick="$.datepicker._toggleDisplay_MonthYearPicker(\'#' + inst.id + '\', 3);return false;">' + drawYear +'</a>');
 					//change prev next behaviour
+					//alert(drawYear);
 					dpPrev.removeAttr('onclick');  //remove DatePicker's onclick event
 					dpNext.removeAttr('onclick');  //remove DatePicker's onclick event
 					_updatePrevNextYear_MYP();
@@ -230,11 +232,18 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 					//change title link behaviour
 					dpTitle.unbind('click');
 					//change prev next behaviour
-					
+					$.backToActualMonth = function() {
+						//var d = new Date();
+						//var month = d.getMonth()+1;
+						$.datepicker._pickMonthYear_MonthYearPicker('#'+inst.id,drawMonth,'M');
+						return false;
+					};
 					var _updateYearPicker_MYP = function(year) {
 						//TODO RTL
 						//change title html
-                        			dpTitle.html('<span class="ui-datepicker-yearrange">' + year + '-' + (year + 9) + '</span>'); //2010 - 2019
+                        dpTitle.html('<a class="ui-datepicker-title" '+
+						'onclick="$.backToActualMonth();" '+
+					    'href="#">'+ year + '-' + (year + 9) + '</a>');
 						//change prev next behaviour
 						dpPrev.unbind('click');
 						dpNext.unbind('click');
@@ -280,6 +289,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 						yearPicker += '</tbody></table>';
 						$('.ui-datepicker-select-year').html(yearPicker);
 					};
+					
 					_updateYearPicker_MYP(year);
 					
 					var dpYearSelector = inst.dpDiv.find('.ui-datepicker-select-year table');
