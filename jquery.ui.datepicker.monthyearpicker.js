@@ -128,7 +128,6 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 			//select month and show datepicker or select year ...
 			this._selectMonthYear(id, dummySelect[0], period);
 				//... and show month picker
-				//alert(dummySelect[0]);
 			if(period == 'Y') {
 				this._toggleDisplay_MonthYearPicker(id, 2);
 			}
@@ -183,7 +182,6 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 					var inMaxYear = (maxYear !== undefined && maxYear == drawYear);
 					var _advanceYear_MYP = function(diff) {
 						inst.drawYear = drawYear += diff;
-						alert(diff);
 						dpTitle.children(':first').text(drawYear);
 						//update screen
 						if(minDate || maxDate) {
@@ -214,7 +212,6 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 					//change title link behaviour
 					dpTitle.html('<a href="#" class="ui-datepicker-yearpicker" onclick="$.datepicker._toggleDisplay_MonthYearPicker(\'#' + inst.id + '\', 3);return false;">' + drawYear +'</a>');
 					//change prev next behaviour
-					//alert(drawYear);
 					dpPrev.removeAttr('onclick');  //remove DatePicker's onclick event
 					dpNext.removeAttr('onclick');  //remove DatePicker's onclick event
 					_updatePrevNextYear_MYP();
