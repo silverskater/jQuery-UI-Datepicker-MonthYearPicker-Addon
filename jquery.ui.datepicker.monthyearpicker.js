@@ -14,7 +14,6 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 	$.datepicker._doKeyDown_MonthYearPicker = $.datepicker._doKeyDown;
 
 	$.extend($.datepicker, {
-		
 		_doKeyDown: function(event) {
 			var inst = $.datepicker._getInst(event.target);
 			var handled = true;
@@ -230,11 +229,18 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 					//change title link behaviour
 					dpTitle.unbind('click');
 					//change prev next behaviour
-					
+					$.backToActualMonth = function() {
+						//var d = new Date();
+						//var month = d.getMonth()+1;
+						$.datepicker._pickMonthYear_MonthYearPicker('#'+inst.id,drawMonth,'M');
+						return false;
+					};
 					var _updateYearPicker_MYP = function(year) {
 						//TODO RTL
 						//change title html
-                        			dpTitle.html('<span class="ui-datepicker-yearrange">' + year + '-' + (year + 9) + '</span>'); //2010 - 2019
+                        dpTitle.html('<a class="ui-datepicker-title" '+
+						'onclick="$.backToActualMonth();" '+
+					    'href="#">'+ year + '-' + (year + 9) + '</a>');
 						//change prev next behaviour
 						dpPrev.unbind('click');
 						dpNext.unbind('click');
@@ -280,6 +286,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 						yearPicker += '</tbody></table>';
 						$('.ui-datepicker-select-year').html(yearPicker);
 					};
+					
 					_updateYearPicker_MYP(year);
 					
 					var dpYearSelector = inst.dpDiv.find('.ui-datepicker-select-year table');
