@@ -58,17 +58,14 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 				return ;
 			}
 			
-			//inst.dpuuid
-			this._retrieveDPUID_MonthYearPicker(inst);
-			var dpuuid = inst.dpuuid;
 			//console.log($('<div>').append(this.dpDiv.clone()).html());
 			
 			var uidptitle = inst.dpDiv.find('.ui-datepicker-title');
-			uidptitle.wrapInner('<a href="#" onclick="DP_jQuery_' + dpuuid + 
-				'.datepicker._toggleDisplay_MonthYearPicker(\'#' + inst.id + '\', 2);return false;" />');
+			var uidptitle_link = uidptitle.wrapInner('<a href="#"/>');
+			uidptitle_link.click(function(){$.datepicker._toggleDisplay_MonthYearPicker('#' + inst.id, 2); return false;});
 
 			inst.dpDiv.children('table.ui-datepicker-calendar').after(this._generateExtraHTML_MonthYearPicker(inst));
-		},		
+		},
 		
 		//focus the date input field
 		_instInputFocus_MYP: function(inst) {
@@ -81,22 +78,8 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 
 		},
 		
-		_retrieveDPUID_MonthYearPicker: function(inst) {
-			if (!inst.dpuuid)
-			{
-				for(attr in window)
-				{
-					if(/^DP_jQuery_/.test(attr))
-					{
-						 inst.dpuuid = attr.replace(/^DP_jQuery_([0-9]+)/, '$1');
-					}
-				}
-			}
-		},
-		
 		_generateMonthPickerHTML_MonthYearPicker: function(inst, minDate, maxDate, drawMonth, inMinYear, inMaxYear) {
 			//TODO RTL?
-			var dpuuid = inst.dpuuid;
 			var monthNamesShort = this._get(inst, 'monthNamesShort');
 
 			var monthPicker = '<table><tbody><tr>';
@@ -108,8 +91,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 				monthPicker += '<td class="' +
 					(unselectable ? ' ' + this._unselectableClass + ' ui-state-disabled': '') +  // highlight unselectable months
 					(month == drawMonth ? ' ui-datepicker-today' : '') + '"' +
-					(unselectable ? '' : ' onclick="DP_jQuery_' + dpuuid + 
-						'.datepicker._pickMonthYear_MonthYearPicker(\'#' + inst.id + '\', ' + month + ', \'M\');return false;"') + '>' + // actions
+					(unselectable ? '' : ' onclick="$.datepicker._pickMonthYear_MonthYearPicker(\'#' + inst.id + '\', ' + month + ', \'M\');return false;"') + '>' + // actions
 					((unselectable ? '<span class="ui-state-default">' + monthNamesShort[month] + '</span>' : '<a class="ui-state-default ' +
 					//(month == drawMonth ? ' ui-state-highlight' : '') +
 					(month == drawMonth ? ' ui-state-active' : '') + // highlight selected day
@@ -151,6 +133,17 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 				this._toggleDisplay_MonthYearPicker(id, 2);
 			}
 		},
+		
+		_addHoverEvents_MonthYearPicker: function (parent) {
+			var dpMonths = parent.find('.ui-state-default');
+			dpMonths.hover(
+				function () {
+					$(this).addClass('ui-state-hover');
+				},
+				function () {
+					$(this).removeClass("ui-state-hover");
+				});
+		},
 
 		_toggleDisplay_MonthYearPicker: function(inst, screen, input) {
 			if(typeof inst == 'string')  {
@@ -170,7 +163,6 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 			//keep the focus for _doKeyDown to work
 			this._instInputFocus_MYP(inst);
 			
-			var dpuuid = inst.dpuuid;
 			var minDate = this._getMinMaxDate(inst, 'min');
 			var maxDate = this._getMinMaxDate(inst, 'max');
 			var drawYear = inst.drawYear;	//inst.drawYear = inst.selectedYear = inst.currentYear
@@ -201,7 +193,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 							inst.dpDiv.children('.ui-datepicker-select-month').html(monthPicker);
 						}
 						_updatePrevNextYear_MYP();
-					}
+					};
 					var _updatePrevNextYear_MYP = function() {
 						dpPrev.unbind('click');
 						if(!inMinYear) {
@@ -217,14 +209,16 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 						else {
 							dpNext.addClass('ui-state-disabled');
 						}
-					}
+					};
 					//change title link behaviour
-					dpTitle.html('<a href="#" onclick="DP_jQuery_' + dpuuid + 
-						'.datepicker._toggleDisplay_MonthYearPicker(\'#' + inst.id + '\', 3);return false;">' + drawYear +'</a>');
+					dpTitle.html('<a href="#" class="ui-datepicker-yearpicker" onclick="$.datepicker._toggleDisplay_MonthYearPicker(\'#' + inst.id + '\', 3);return false;">' + drawYear +'</a>');
 					//change prev next behaviour
 					dpPrev.removeAttr('onclick');  //remove DatePicker's onclick event
 					dpNext.removeAttr('onclick');  //remove DatePicker's onclick event
 					_updatePrevNextYear_MYP();
+					
+					var dpMonthSelector = inst.dpDiv.find('.ui-datepicker-select-month table');
+					this._addHoverEvents_MonthYearPicker(dpMonthSelector);
 					
 					$('table.ui-datepicker-calendar').hide();
 					$('.ui-datepicker-select-month').show();
@@ -239,8 +233,8 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 					
 					var _updateYearPicker_MYP = function(year) {
 						//TODO RTL
-						//title text
-						dpTitle.text(year + '-' + (year + 9)); //2010 - 2019
+						//change title html
+                        			dpTitle.html('<span class="ui-datepicker-yearrange">' + year + '-' + (year + 9) + '</span>'); //2010 - 2019
 						//change prev next behaviour
 						dpPrev.unbind('click');
 						dpNext.unbind('click');
@@ -269,8 +263,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 								(unselectable ? ' ' + this._unselectableClass + ' ui-state-disabled': '') +  // highlight unselectable months
 								((!unselectable && (i==1 || i==12)) ? ' outoffocus' : '') +
 								(year == drawYear ? ' ui-datepicker-today' : '') + '"' +
-								(unselectable ? '' : ' onclick="DP_jQuery_' + dpuuid + 
-									'.datepicker._pickMonthYear_MonthYearPicker(\'#' + inst.id + '\', ' + year + ', \'Y\');return false;"') + '>' + // actions
+								(unselectable ? '' : ' onclick="$.datepicker._pickMonthYear_MonthYearPicker(\'#' + inst.id + '\', ' + year + ', \'Y\');return false;"') + '>' + // actions
 								((unselectable ? '<span class="ui-state-default">' + year + '</span>' : '<a class="ui-state-default ' +
 								//(month == drawMonth ? ' ui-state-highlight' : '') +
 								(year == drawYear ? ' ui-state-active' : '') + // highlight selected day
@@ -286,9 +279,11 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 						}
 						yearPicker += '</tbody></table>';
 						$('.ui-datepicker-select-year').html(yearPicker);
-					}
-
+					};
 					_updateYearPicker_MYP(year);
+					
+					var dpYearSelector = inst.dpDiv.find('.ui-datepicker-select-year table');
+					this._addHoverEvents_MonthYearPicker(dpYearSelector);
 					
 					$('table.ui-datepicker-calendar').hide();
 					$('.ui-datepicker-select-month').hide();
