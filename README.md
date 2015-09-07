@@ -1,6 +1,6 @@
 # jQuery-UI-Datepicker-MonthYearPicker-Addon
 
-Month and year picker addon for the jQuery UI Datepicker v1.11.4. A considerable UX improvement compared to the month and year dropdowns.
+Month and year picker addon for the jQuery UI Datepicker (current version works with v1.11.4). A considerable UX improvement compared to the month and year dropdowns.
 
 ## How to use
 
