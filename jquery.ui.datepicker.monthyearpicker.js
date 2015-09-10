@@ -239,7 +239,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 						//TODO RTL
 						//change title html
                         dpTitle.html('<a class="ui-datepicker-title" '+
-						'onclick="$.backToActualMonth();" '+
+						'onclick="return $.backToActualMonth();" '+
 					    'href="#">'+ year + '-' + (year + 9) + '</a>');
 						//change prev next behaviour
 						dpPrev.unbind('click');
