@@ -97,7 +97,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 					//(otherMonth ? ' ui-priority-secondary' : '') + // distinguish dates from other months
 					'" href="#">' + monthNamesShort[month] + '</a>')) + '</td>'; // display selectable date
 				
-				if(++month % 4 == 0) {
+				if(++month % 4 === 0) {
 					monthPicker += '</tr>';
 					if(month != 12) {
 						monthPicker += '<tr>';
@@ -219,9 +219,14 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 					var dpMonthSelector = inst.dpDiv.find('.ui-datepicker-select-month table');
 					this._addHoverEvents_MonthYearPicker(dpMonthSelector);
 					
-					$('table.ui-datepicker-calendar').hide();
-					$('.ui-datepicker-select-month').show();
-					$('.ui-datepicker-select-year').hide();
+					// JV (11-11-2015): only handle the current datepicker inst
+					// $('table.ui-datepicker-calendar').hide();
+					// $('.ui-datepicker-select-month').show();
+					// $('.ui-datepicker-select-year').hide();
+					inst.dpDiv.find('table.ui-datepicker-calendar').hide();
+					inst.dpDiv.find('.ui-datepicker-select-month').show();
+					inst.dpDiv.find('.ui-datepicker-select-year').hide();
+
 					break;
 				case 3:
 					//year picker
@@ -292,9 +297,13 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 					var dpYearSelector = inst.dpDiv.find('.ui-datepicker-select-year table');
 					this._addHoverEvents_MonthYearPicker(dpYearSelector);
 					
-					$('table.ui-datepicker-calendar').hide();
-					$('.ui-datepicker-select-month').hide();
-					$('.ui-datepicker-select-year').show();
+					// JV (11-11-2015): only handle the current datepicker inst
+					// $('table.ui-datepicker-calendar').hide();
+					// $('.ui-datepicker-select-month').hide();
+					// $('.ui-datepicker-select-year').show();
+					inst.dpDiv.find('table.ui-datepicker-calendar').hide();
+					inst.dpDiv.find('.ui-datepicker-select-month').hide();
+					inst.dpDiv.find('.ui-datepicker-select-year').show();
 					
 					break;
 			}
