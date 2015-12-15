@@ -2,11 +2,11 @@
 Month and Year picker for jQuery UI Datepicker 1.8.21
 
 Written by Anton Ludescher (silverskater{at}gmail.com).
-Dual licensed under the GPL (http://dev.jquery.com/browser/trunk/jquery/GPL-LICENSE.txt) and 
+Dual licensed under the GPL (http://dev.jquery.com/browser/trunk/jquery/GPL-LICENSE.txt) and
 MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 
 
-(function( $, undefined ) {
+(function($, undefined ) {
 
 	//overriding functions meant to be private (starting with an underscore)
 	$.datepicker._updateDatepicker_MonthYearPicker = $.datepicker._updateDatepicker;
@@ -43,11 +43,11 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 				$.datepicker._doKeyDown_MonthYearPicker(event);
 			}
 		},
-		
+
 		_updateDatepicker: function(inst) {
 			//call the original function
 			this._updateDatepicker_MonthYearPicker(inst);
-			
+
 			//TODO: multiMonth
 			var numMonths = this._getNumberOfMonths(inst);
 			var isMultiMonth = (numMonths[0] != 1 || numMonths[1] != 1);
@@ -56,16 +56,16 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 			if(isMultiMonth || changeMonth || changeYear) {
 				return ;
 			}
-			
+
 			//console.log($('<div>').append(this.dpDiv.clone()).html());
-			
+
 			var uidptitle = inst.dpDiv.find('.ui-datepicker-title');
 			var uidptitle_link = uidptitle.wrapInner('<a href="#"/>');
 			uidptitle_link.click(function(){$.datepicker._toggleDisplay_MonthYearPicker('#' + inst.id, 2); return false;});
 
 			inst.dpDiv.children('table.ui-datepicker-calendar').after(this._generateExtraHTML_MonthYearPicker(inst));
 		},
-		
+
 		//focus the date input field
 		_instInputFocus_MYP: function(inst) {
 			//code copied from datePicker's _updateDatepicker()
@@ -76,13 +76,13 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 				inst.input.focus();
 
 		},
-		
+
 		_generateMonthPickerHTML_MonthYearPicker: function(inst, minDate, maxDate, drawMonth, inMinYear, inMaxYear) {
 			//TODO RTL?
 			var monthNamesShort = this._get(inst, 'monthNamesShort');
 
 			var monthPicker = '<table><tbody><tr>';
-			
+
 			var unselectable = false;
 			for (var month = 0; month < 12; ) {
 				unselectable = 	(inMinYear && month < minDate.getMonth()) ||
@@ -90,13 +90,13 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 				monthPicker += '<td class="' +
 					(unselectable ? ' ' + this._unselectableClass + ' ui-state-disabled': '') +  // highlight unselectable months
 					(month == drawMonth ? ' ui-datepicker-today' : '') + '"' +
-					(unselectable ? '' : ' onclick="$.datepicker._pickMonthYear_MonthYearPicker(\'#' + inst.id + '\', ' + month + ', \'M\');return false;"') + '>' + // actions
+					(unselectable ? '' : ' onclick="jQuery.datepicker._pickMonthYear_MonthYearPicker(\'#' + inst.id + '\', ' + month + ', \'M\');return false;"') + '>' + // actions
 					((unselectable ? '<span class="ui-state-default">' + monthNamesShort[month] + '</span>' : '<a class="ui-state-default ' +
 					//(month == drawMonth ? ' ui-state-highlight' : '') +
 					(month == drawMonth ? ' ui-state-active' : '') + // highlight selected day
 					//(otherMonth ? ' ui-priority-secondary' : '') + // distinguish dates from other months
 					'" href="#">' + monthNamesShort[month] + '</a>')) + '</td>'; // display selectable date
-				
+
 				if(++month % 4 === 0) {
 					monthPicker += '</tr>';
 					if(month != 12) {
@@ -105,7 +105,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 				}
 			}
 			monthPicker += '</tbody></table>';
-			
+
 			return monthPicker;
 		},
 
@@ -118,7 +118,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 			var inMaxYear = (maxDate && maxDate.getFullYear() == drawYear);
 
 			var monthPicker = this._generateMonthPickerHTML_MonthYearPicker(inst, minDate, maxDate, drawMonth, inMinYear, inMaxYear);
-			
+
 			return '<div class="ui-datepicker-select-month" style="display: none">' + monthPicker + '</div>' +
 				'<div class="ui-datepicker-select-year" style="display: none"></div>';	//yearPicker gets filled dinamically
 		},
@@ -132,7 +132,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 				this._toggleDisplay_MonthYearPicker(id, 2);
 			}
 		},
-		
+
 		_addHoverEvents_MonthYearPicker: function (parent) {
 			var dpMonths = parent.find('.ui-state-default');
 			dpMonths.hover(
@@ -161,7 +161,7 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 			}
 			//keep the focus for _doKeyDown to work
 			this._instInputFocus_MYP(inst);
-			
+
 			var minDate = this._getMinMaxDate(inst, 'min');
 			var maxDate = this._getMinMaxDate(inst, 'max');
 			var drawYear = inst.drawYear;	//inst.drawYear = inst.selectedYear = inst.currentYear
@@ -172,9 +172,9 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 			var dpPrev = dpHeader.children('a.ui-datepicker-prev');
 			var dpNext = dpHeader.children('a.ui-datepicker-next');
 			var dpTitle = dpHeader.children('.ui-datepicker-title');
-			
+
 			var self = this;
-			
+
 			switch (screen) {
 				case 2:
 					//month picker
@@ -210,23 +210,18 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 						}
 					};
 					//change title link behaviour
-					dpTitle.html('<a href="#" class="ui-datepicker-yearpicker" onclick="$.datepicker._toggleDisplay_MonthYearPicker(\'#' + inst.id + '\', 3);return false;">' + drawYear +'</a>');
+					dpTitle.html('<a href="#" class="ui-datepicker-yearpicker" onclick="jQuery.datepicker._toggleDisplay_MonthYearPicker(\'#' + inst.id + '\', 3);return false;">' + drawYear +'</a>');
 					//change prev next behaviour
 					dpPrev.removeAttr('onclick');  //remove DatePicker's onclick event
 					dpNext.removeAttr('onclick');  //remove DatePicker's onclick event
 					_updatePrevNextYear_MYP();
-					
+
 					var dpMonthSelector = inst.dpDiv.find('.ui-datepicker-select-month table');
 					this._addHoverEvents_MonthYearPicker(dpMonthSelector);
-					
-					// JV (11-11-2015): only handle the current datepicker inst
-					// $('table.ui-datepicker-calendar').hide();
-					// $('.ui-datepicker-select-month').show();
-					// $('.ui-datepicker-select-year').hide();
+
 					inst.dpDiv.find('table.ui-datepicker-calendar').hide();
 					inst.dpDiv.find('.ui-datepicker-select-month').show();
 					inst.dpDiv.find('.ui-datepicker-select-year').hide();
-
 					break;
 				case 3:
 					//year picker
@@ -261,20 +256,20 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 						else {
 							dpNext.addClass('ui-state-disabled');
 						}
-						
+
 						//generate year picker HTML
 						var yearPicker = '<table><tbody><tr>';
 						//show years in 4x3 matrix (2009-2020)
 						year--; //last year of the previous decade (2009)
 						for (var i = 1; i <= 12; i++) {
-							unselectable = (minYear !== 'undefined' && year < minYear) || 
+							unselectable = (minYear !== 'undefined' && year < minYear) ||
 								(maxYear !== 'undefined' && year > maxYear);
 							//html += '<span class="year'+(i == -1 || i == 10 ? ' old' : '')+(currentYear == year ? ' active' : '')+'">'+year+'</span>';
 							yearPicker += '<td class="' +
 								(unselectable ? ' ' + this._unselectableClass + ' ui-state-disabled': '') +  // highlight unselectable months
 								((!unselectable && (i==1 || i==12)) ? ' outoffocus' : '') +
 								(year == drawYear ? ' ui-datepicker-today' : '') + '"' +
-								(unselectable ? '' : ' onclick="$.datepicker._pickMonthYear_MonthYearPicker(\'#' + inst.id + '\', ' + year + ', \'Y\');return false;"') + '>' + // actions
+								(unselectable ? '' : ' onclick="jQuery.datepicker._pickMonthYear_MonthYearPicker(\'#' + inst.id + '\', ' + year + ', \'Y\');return false;"') + '>' + // actions
 								((unselectable ? '<span class="ui-state-default">' + year + '</span>' : '<a class="ui-state-default ' +
 								//(month == drawMonth ? ' ui-state-highlight' : '') +
 								(year == drawYear ? ' ui-state-active' : '') + // highlight selected day
@@ -291,20 +286,16 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 						yearPicker += '</tbody></table>';
 						$('.ui-datepicker-select-year').html(yearPicker);
 					};
-					
+
 					_updateYearPicker_MYP(year);
-					
+
 					var dpYearSelector = inst.dpDiv.find('.ui-datepicker-select-year table');
 					this._addHoverEvents_MonthYearPicker(dpYearSelector);
-					
-					// JV (11-11-2015): only handle the current datepicker inst
-					// $('table.ui-datepicker-calendar').hide();
-					// $('.ui-datepicker-select-month').hide();
-					// $('.ui-datepicker-select-year').show();
+
 					inst.dpDiv.find('table.ui-datepicker-calendar').hide();
 					inst.dpDiv.find('.ui-datepicker-select-month').hide();
 					inst.dpDiv.find('.ui-datepicker-select-year').show();
-					
+
 					break;
 			}
 
