@@ -26,13 +26,18 @@
 <!-- Datepicker -->
 <h2 class="demoHeaders">Datepicker</h2>
 <div><p>Click on the [Month Year] link to see the magic:</p></div>
-<div id="datepicker"></div>
 
+<h3>Date field</h3>
+<input type="text" id="datepicker">
+
+<h3>Inline datepicker</h3>
+<div id="datepicker-inline"></div>
 
 <script>
-$( "#datepicker" ).datepicker({
+$( "#datepicker-inline" ).datepicker({
 	inline: true
 });
+$( "#datepicker" ).datepicker();
 </script>
 
 </body>
