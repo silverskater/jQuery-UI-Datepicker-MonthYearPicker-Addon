@@ -64,6 +64,8 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 			uidptitle_link.click(function(){$.datepicker._toggleDisplay_MonthYearPicker('#' + inst.id, 2); return false;});
 
 			inst.dpDiv.children('table.ui-datepicker-calendar').after(this._generateExtraHTML_MonthYearPicker(inst));
+		
+			this._reposition_MonthYearPicker(inst);
 		},
 
 		//focus the date input field
@@ -131,6 +133,17 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 			if(period == 'Y') {
 				this._toggleDisplay_MonthYearPicker(id, 2);
 			}
+		},
+
+		_reposition_MonthYearPicker: function (inst) {
+			if (inst.inline) {
+				return;
+			}
+			inst.dpDiv.position({
+				my: "left top",
+				at: "left bottom",
+				of: $(inst.input)
+			});
 		},
 
 		_addHoverEvents_MonthYearPicker: function (parent) {
@@ -222,6 +235,9 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 					inst.dpDiv.find('table.ui-datepicker-calendar').hide();
 					inst.dpDiv.find('.ui-datepicker-select-month').show();
 					inst.dpDiv.find('.ui-datepicker-select-year').hide();
+
+					this._reposition_MonthYearPicker(inst);
+
 					break;
 				case 3:
 					//year picker
@@ -296,6 +312,8 @@ MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. */
 					inst.dpDiv.find('.ui-datepicker-select-month').hide();
 					inst.dpDiv.find('.ui-datepicker-select-year').show();
 
+					this._reposition_MonthYearPicker(inst);
+					
 					break;
 			}
 
